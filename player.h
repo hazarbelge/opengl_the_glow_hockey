@@ -49,9 +49,9 @@ inline Player::Player(GLint playerNumber, GLfloat playerX1, GLfloat playerY1, GL
 
 inline void Player::drawPlayer() const {
     if (playerNumber == 1) {
-        glColor3f(0.8, 0.0, 0.0);
+        glColor3f(1, 0.0, 0.0);
     } else {
-        glColor3f(0.0, 0.0, 0.8);
+        glColor3f(0.0, 0.0, 1);
     }
     glBegin(GL_POLYGON);
     glVertex2f(getPlayerX1(), getPlayerY2());

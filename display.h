@@ -2,46 +2,53 @@
 #define CO_OP_BALL_GAME_DISPLAY_H
 
 #include "manager_methods.h"
+#include "RgbImage.h"
 
-void goal_lines(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2) {
-    glLineWidth(5);
-    glBegin(GL_LINE_STRIP);
-    glVertex2f(x1, y1);
-    glVertex2f(x2, y1);
-    glVertex2f(x2, y2);
-    glVertex2f(x1, y2);
+static GLuint textureName[1];
+
+char* filenameArrayMain[1] = {
+        "../pitch.bmp",
+};
+
+void loadTextureFromFileMain(char *filename)
+{
+    glShadeModel(GL_FLAT);
+    glEnable(GL_DEPTH_TEST);
+
+    RgbImage theTexMap( filename );
+
+    // Pixel alignment: each row is word aligned.  Word alignment is the default.
+    // glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+    // Set the interpolation settings to best quality.
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB,
+                      theTexMap.GetNumCols(), theTexMap.GetNumRows(),
+                      GL_RGB, GL_UNSIGNED_BYTE, theTexMap.ImageData() );
+}
+
+void pitch_background(){
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(1.0, 1.0, 1.0, 0.4);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    glBindTexture(GL_TEXTURE_2D, textureName[0]);	// Texture #i is active now
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 0.0); glVertex2f(-WINDOW_WIDTH/2, -WINDOW_HEIGHT/2);
+    glTexCoord2f(0.0, 1.0); glVertex2f(-WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
+    glTexCoord2f(1.0, 1.0); glVertex2f(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
+    glTexCoord2f(1.0, 0.0); glVertex2f(WINDOW_WIDTH/2, -WINDOW_HEIGHT/2);
     glEnd();
-    glLineWidth(1);
-}
 
-void goal_border_lines() {
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4f(1.0, 1.0, 1.0, 0.4);
-    line_loop(goal1X1, goal1Y1, goal1X1, goal1Y2);
-    line_loop(goal2X1, goal2Y1, goal2X1, goal2Y2);
-    glDisable(GL_BLEND);
-}
-
-void penalty_area_lines() {
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4f(1.0, 1.0, 1.0, 0.4);
-    line_loop(goal1X1, goal1Y1, goal1X1 + 100, goal1Y2);
-    line_loop(goal2X1, goal1Y1, goal2X1 - 100, goal1Y2);
-    glDisable(GL_BLEND);
-}
-
-void penalty_spots() {
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4f(1.0, 1.0, 1.0, 0.4);
-    glPointSize(8.0);
-    glBegin(GL_POINTS);
-    glVertex2f(goal1X1 + 50, goal1Y1 + goalHeight / 2);
-    glVertex2f(goal2X1 - 50, goal2Y1 + goalHeight / 2);
-    glEnd();
-    glPointSize(1.0);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
 }
 
@@ -122,11 +129,95 @@ void pitch_center_circle() {
 
 void pitch_center_spot() {
     glColor3f(1.0, 1.0, 1.0);
-    glPointSize(8.0);
-    glBegin(GL_POINTS);
-    glVertex2f(0.0, 0.0);
+    glPointSize(7.0);
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j++) {
+        auto angle = (GLfloat) (j * pi / 180);
+        GLfloat x2 = (GLfloat) 0 + (5 * cos(angle));
+        GLfloat y2 = (GLfloat) 0 + (5 * sin(angle));
+        glVertex2f(x2, y2);
+    }
     glEnd();
     glPointSize(1.0);
+}
+
+void drawPitch() {
+    pitch_background();
+    pitch_borders();
+    pitch_lines();
+    pitch_corner_quarter_circles();
+    pitch_center_circle();
+    pitch_center_spot();
+}
+
+void goal_lines(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2) {
+    glLineWidth(5);
+    glBegin(GL_LINE_STRIP);
+    glVertex2f(x1, y1);
+    glVertex2f(x2, y1);
+    glVertex2f(x2, y2);
+    glVertex2f(x1, y2);
+    glEnd();
+    glLineWidth(1);
+}
+
+void goal_border_lines() {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(1.0, 1.0, 1.0, 0.4);
+    line_loop(goal1X1, goal1Y1, goal1X1, goal1Y2);
+    line_loop(goal2X1, goal2Y1, goal2X1, goal2Y2);
+    glDisable(GL_BLEND);
+}
+
+void penalty_area_lines() {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(1.0, 1.0, 1.0, 0.4);
+    line_loop(goal1X1, goal1Y1, goal1X1 + WINDOW_WIDTH/12, goal1Y2);
+    line_loop(goal2X1, goal1Y1, goal2X1 - WINDOW_WIDTH/12, goal1Y2);
+    glDisable(GL_BLEND);
+}
+
+void penalty_spots() {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(1.0, 1.0, 1.0, 0.4);
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j++) {
+        auto angle = (GLfloat) (j * pi / 180);
+        GLfloat x2 = (GLfloat) goal1X1 + WINDOW_WIDTH/24 + (4 * cos(angle));
+        GLfloat y2 = (GLfloat) goal1Y1 + goalHeight / 2 + (4 * sin(angle));
+        glVertex2f(x2, y2);
+    }
+    glEnd();
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j++) {
+        auto angle = (GLfloat) (j * pi / 180);
+        GLfloat x2 = (GLfloat) goal2X1 - WINDOW_WIDTH/24 + (4 * cos(angle));
+        GLfloat y2 = (GLfloat) goal2Y1 + goalHeight / 2 + (4 * sin(angle));
+        glVertex2f(x2, y2);
+    }
+    glEnd();
+    glDisable(GL_BLEND);
+}
+
+void goal1() {
+    glColor3f(1, 0.0, 0.0);
+    goal_lines(goal1X1, goal1Y1, goal1X2, goal1Y2);
+}
+
+void goal2() {
+    glColor3f(0.0, 0.0, 1);
+    goal_lines(goal2X1, goal2Y1, goal2X2, goal2Y2);
+}
+
+void drawGoals() {
+    goal1();
+    goal2();
+    goal_border_lines();
+    penalty_area_lines();
+    penalty_spots();
 }
 
 void ball() {
@@ -141,25 +232,53 @@ void ball() {
     glEnd();
 }
 
-void goal1() {
-    glColor3f(0.8, 0.0, 0.0);
-    goal_lines(goal1X1, goal1Y1, goal1X2, goal1Y2);
-}
-
-void goal2() {
-    glColor3f(0.0, 0.0, 0.8);
-    goal_lines(goal2X1, goal2Y1, goal2X2, goal2Y2);
-}
-
 void drawPlayers() {
     player1.drawPlayer();
     player2.drawPlayer();
 }
 
+void snow_animation_foreground() {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(1.0, 1.0, 1.0, 0.8);
+    for (int i = 0; i < 50; i++) {
+        GLfloat x1 = returnRandomFloatBetween(-WINDOW_WIDTH/2, WINDOW_WIDTH/2);
+        GLfloat y1 = returnRandomFloatBetween(-WINDOW_HEIGHT/2, WINDOW_HEIGHT/2);
+        glBegin(GL_POLYGON);
+        for (int j = 0; j < 360; j++) {
+            auto angle = (GLfloat) (j * pi / 180);
+            GLfloat x2 = (GLfloat) x1 + (3 * cos(angle));
+            GLfloat y2 = (GLfloat) y1 + (3 * sin(angle));
+            glVertex2f(x2, y2);
+        }
+        glEnd();
+    }
+    glDisable(GL_BLEND);
+}
+
+void rain_animation_foreground() {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(0.0, 0.0, 1.0, 0.7);
+    for (int i = 0; i < 50; i++) {
+        GLfloat x1 = returnRandomFloatBetween(-WINDOW_WIDTH/2, WINDOW_WIDTH/2);
+        GLfloat y1 = returnRandomFloatBetween(-WINDOW_HEIGHT/2, WINDOW_HEIGHT/2);
+        glBegin(GL_POLYGON);
+        for (int j = 0; j < 360; j++) {
+            auto angle = (GLfloat) (j * pi / 180);
+            GLfloat x2 = (GLfloat) x1 + (3 * cos(angle));
+            GLfloat y2 = (GLfloat) y1 + (3 * sin(angle));
+            glVertex2f(x2, y2);
+        }
+        glEnd();
+    }
+    glDisable(GL_BLEND);
+}
+
 void goal_text() {
     if (is_player_scored) {
         glColor3f(0.0, 0.0, 0.0);
-        glRasterPos2f(-70, 0);
+        glRasterPos2f(-75, -5);
         for (char i: goalTextString) {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
         }
@@ -201,6 +320,12 @@ void scoreText() {
     }
 }
 
+void drawTexts() {
+    scoreText();
+    timeText();
+    goal_text();
+}
+
 void reshape([[maybe_unused]] int w, [[maybe_unused]] int h) {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
@@ -211,27 +336,24 @@ void reshape([[maybe_unused]] int w, [[maybe_unused]] int h) {
 }
 
 void displayInit() {
+    glGenTextures( 1, textureName );	// Load four texture names into array
+    for ( int i=0; i<1; i++ ) {
+        glBindTexture(GL_TEXTURE_2D, textureName[i]);	// Texture #i is active now
+        loadTextureFromFileMain( filenameArrayMain[i] );			// Load texture #i
+    }
     player1 = Player(1, player1X1, player1Y1, playerWidth, playerHeight, playerSpeed);
     player2 = Player(2, player2X1, player2Y1, playerWidth, playerHeight, playerSpeed);
 }
 
 void display() {
-    glClear(GL_COLOR_BUFFER_BIT);
-    pitch_borders();
-    pitch_lines();
-    pitch_corner_quarter_circles();
-    pitch_center_circle();
-    pitch_center_spot();
-    goal1();
-    goal2();
-    goal_border_lines();
-    penalty_area_lines();
-    penalty_spots();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    drawPitch();
+    drawGoals();
     drawPlayers();
     ball();
-    timeText();
-    scoreText();
-    goal_text();
+    if (isSnowyDay) snow_animation_foreground();
+    if (isRainyDay) rain_animation_foreground();
+    drawTexts();
     glFlush();
 }
 

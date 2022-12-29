@@ -3,57 +3,115 @@
 
 #include "manager_methods.h"
 
-void goal_control() {
-    if (ballX > goal2X1 + goalWidth/3 && ballY >= goal2Y1 && ballY <= goal2Y2) {
+bool goal_control() {
+    if (ballX + ballRadius > goal2X2 && ballY >= goal2Y1 && ballY <= goal2Y2) {
         player1_won();
+        return true;
     }
-    if (ballX < goal1X1 - goalWidth/3 && ballY >= goal1Y1 && ballY <= goal1Y2) {
+    if (ballX - ballRadius < goal1X2 && ballY >= goal1Y1 && ballY <= goal1Y2) {
         player2_won();
+        return true;
     }
+
+    return false;
 }
 
-void collide_with_player_rectangles() {
+bool collide_with_player_rectangles() {
     if (ballX - ballRadius <= player1.getPlayerX2() && ballY >= player1.getPlayerY1() && ballY <= player1.getPlayerY2()) {
         ballX = player1.getPlayerX2() + ballRadius;
         ballSpeedX = -ballSpeedX;
+        return true;
     }
 
     if (ballX + ballRadius >= player2.getPlayerX1() && ballY >= player2.getPlayerY1() && ballY <= player2.getPlayerY2()) {
         ballX = player2.getPlayerX1() - ballRadius;
         ballSpeedX = -ballSpeedX;
+        return true;
     }
+
+    return false;
 }
 
-void collide_with_top_bottom() {
-    if (ballY + ballRadius >= WINDOW_HEIGHT/2 - padding) {
-        ballSpeedY = -ballSpeedY;
+bool collide_with_top_bottom() {
+    if(ballSpeedY > 0) {
+        if (ballY + ballRadius + ballSpeedY >= WINDOW_HEIGHT/2 - padding) {
+            ballY = WINDOW_HEIGHT/2 - padding;
+            ballSpeedY = -ballSpeedY;
+            return true;
+        }
+    } else {
+        if (ballY - ballRadius - ballSpeedY <= -WINDOW_HEIGHT/2 + padding) {
+            ballY = -WINDOW_HEIGHT/2 + padding;
+            ballSpeedY = -ballSpeedY;
+            return true;
+        }
     }
-    if (ballY - ballRadius <= -WINDOW_HEIGHT/2 + padding) {
-        ballSpeedY = -ballSpeedY;
-    }
+
+    return false;
 }
 
-void collide_with_left_right() {
+bool collide_with_left_right() {
     if ((ballY >= goal2Y1 && ballY <= goal2Y2) || (ballY >= goal1Y1 && ballY <= goal1Y2)) {
-        return;
+        return false;
     }
 
-    if (ballX + ballRadius >= WINDOW_WIDTH/2 - padding) {
-        ballSpeedX = -ballSpeedX;
+    if(ballSpeedX > 0) {
+        if (ballX + ballRadius + ballSpeedX >= WINDOW_WIDTH/2 - padding) {
+            ballX = WINDOW_WIDTH/2 - padding;
+            ballSpeedX = -ballSpeedX;
+            return true;
+        }
+    } else {
+        if (ballX - ballRadius - ballSpeedX <= -WINDOW_WIDTH/2 + padding) {
+            ballX = -WINDOW_WIDTH/2 + padding;
+            ballSpeedX = -ballSpeedX;
+            return true;
+        }
     }
-    if (ballX - ballRadius <= -WINDOW_WIDTH/2 + padding) {
-        ballSpeedX = -ballSpeedX;
+
+    return false;
+}
+
+bool collide_with_goal_rear_lines() {
+    if (ballY + ballRadius >= goal2Y2 && ballY + ballRadius <= goal2Y2 + 10 && ballX >= goal2X1 && ballX <= goal2X2) {
+        ballSpeedY = -ballSpeedY;
+        return true;
     }
+    if (ballY - ballRadius <= goal2Y1 && ballY + ballRadius >= goal2Y1 - 10 && ballX >= goal2X1 && ballX <= goal2X2) {
+        ballSpeedY = -ballSpeedY;
+        return true;
+    }
+    if (ballY + ballRadius >= goal1Y2 && ballY + ballRadius <= goal2Y2 + 10 && ballX >= goal1X2 && ballX <= goal1X1) {
+        ballSpeedY = -ballSpeedY;
+        return true;
+    }
+    if (ballY - ballRadius <= goal1Y1 && ballY + ballRadius >= goal2Y1 - 10 && ballX >= goal1X2 && ballX <= goal1X1) {
+        ballSpeedY = -ballSpeedY;
+        return true;
+    }
+
+    return false;
 }
 
 void ball_movement() {
-    goal_control();
-    collide_with_player_rectangles();
-    collide_with_top_bottom();
-    collide_with_left_right();
-
     ballX += ballSpeedX;
     ballY += ballSpeedY;
+
+    if (goal_control()) {
+        return;
+    }
+    if (collide_with_player_rectangles()) {
+        return;
+    }
+    if (collide_with_top_bottom()) {
+        return;
+    }
+    if (collide_with_left_right()) {
+        return;
+    }
+    if (collide_with_goal_rear_lines()) {
+        return;
+    }
 }
 
 void speedUpBall() {

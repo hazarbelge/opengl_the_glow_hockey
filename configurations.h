@@ -3,11 +3,14 @@
 
 #include "manager_methods.h"
 
-#define pi 3.14159265358979323846
+#define pi 3.14
 
 GLfloat WINDOW_WIDTH = 1200;
 GLfloat WINDOW_HEIGHT = 600;
 GLfloat padding = 50.0;
+
+bool isSnowyDay = false;
+bool isRainyDay = false;
 
 GLfloat goalWidth = 30.0;
 GLfloat goalHeight = WINDOW_HEIGHT/(GLfloat)2;
