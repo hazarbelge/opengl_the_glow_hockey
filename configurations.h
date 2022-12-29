@@ -43,8 +43,8 @@ GLfloat ballX = 0.0;
 GLfloat ballY =  - paddingTop/2;
 
 #ifdef __APPLE_CC__
-GLfloat ballSpeedX = 5;
-GLfloat ballSpeedY = 5;
+GLfloat ballSpeedX = 7;
+GLfloat ballSpeedY = 7;
 #else
 GLfloat ballSpeedX = 0.5;
 GLfloat ballSpeedY = 0.5;
@@ -57,8 +57,8 @@ void resetBall() {
     ballX = 0.0;
     ballY = 0.0;
 #ifdef __APPLE_CC__
-    ballSpeedX = returnRandomFloatBetween(4, 7);
-    ballSpeedY = returnRandomFloatBetween(4, 7);
+    ballSpeedX = returnRandomFloatBetween(6, 7);
+    ballSpeedY = returnRandomFloatBetween(6, 7);
 #else
     ballSpeedX = returnRandomFloatBetween(0.25, 0.75);
     ballSpeedY = returnRandomFloatBetween(0.25, 0.75);
