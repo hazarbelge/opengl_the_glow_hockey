@@ -3,7 +3,7 @@
 int main (int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-    glutInitWindowPosition(400, 200);
+    glutInitWindowPosition(300, 250);
     glutInitWindowSize((int)WINDOW_WIDTH, (int)WINDOW_HEIGHT);
     glutCreateWindow("The Ball Game");
     glClearColor(0.0, 0.75, 0.0, 0.0);
@@ -14,6 +14,7 @@ int main (int argc, char** argv) {
     glutKeyboardUpFunc(keyboardUp);
     glutSpecialFunc(special);
     glutSpecialUpFunc(specialUp);
+    displayInit();
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     glutIdleFunc(idle);

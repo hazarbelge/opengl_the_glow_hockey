@@ -3,26 +3,8 @@
 
 #include "manager_methods.h"
 
-void line_loop(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2) {
-    glBegin(GL_LINE_LOOP);
-    glVertex2f(x1, y1);
-    glVertex2f(x2, y1);
-    glVertex2f(x2, y2);
-    glVertex2f(x1, y2);
-    glEnd();
-}
-
-void rectangle(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2) {
-    glBegin(GL_POLYGON);
-    glVertex2f(x1, y2);
-    glVertex2f(x2, y2);
-    glVertex2f(x2, y1);
-    glVertex2f(x1, y1);
-    glEnd();
-}
-
 void goal_lines(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2) {
-    glLineWidth(3);
+    glLineWidth(5);
     glBegin(GL_LINE_STRIP);
     glVertex2f(x1, y1);
     glVertex2f(x2, y1);
@@ -56,8 +38,8 @@ void penalty_spots() {
     glColor4f(1.0, 1.0, 1.0, 0.4);
     glPointSize(8.0);
     glBegin(GL_POINTS);
-    glVertex2f(goal1X1 + 50, goal1Y1 + goalHeight/2);
-    glVertex2f(goal2X1 - 50, goal2Y1 + goalHeight/2);
+    glVertex2f(goal1X1 + 50, goal1Y1 + goalHeight / 2);
+    glVertex2f(goal2X1 - 50, goal2Y1 + goalHeight / 2);
     glEnd();
     glPointSize(1.0);
     glDisable(GL_BLEND);
@@ -92,7 +74,7 @@ void pitch_corner_quarter_circles() {
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_LINE_STRIP);
     for (int i = 0; i < 90; i++) {
-        auto angle = (GLfloat)(i * pi / 180);
+        auto angle = (GLfloat) (i * pi / 180);
         GLfloat x = (GLfloat) (-WINDOW_WIDTH / 2) + padding + (pitchCornerRadius * cos(angle));
         GLfloat y = (GLfloat) (-WINDOW_HEIGHT / 2) + padding + (pitchCornerRadius * sin(angle));
         glVertex2f(x, y);
@@ -100,7 +82,7 @@ void pitch_corner_quarter_circles() {
     glEnd();
     glBegin(GL_LINE_STRIP);
     for (int i = 0; i < 90; i++) {
-        auto angle = (GLfloat)(i * pi / 180);
+        auto angle = (GLfloat) (i * pi / 180);
         GLfloat x = (GLfloat) (-WINDOW_WIDTH / 2) + padding + (pitchCornerRadius * cos(angle));
         GLfloat y = (GLfloat) (WINDOW_HEIGHT / 2) - padding - (pitchCornerRadius * sin(angle));
         glVertex2f(x, y);
@@ -108,7 +90,7 @@ void pitch_corner_quarter_circles() {
     glEnd();
     glBegin(GL_LINE_STRIP);
     for (int i = 0; i < 90; i++) {
-        auto angle = (GLfloat)(i * pi / 180);
+        auto angle = (GLfloat) (i * pi / 180);
         GLfloat x = (GLfloat) (WINDOW_WIDTH / 2) - padding - (pitchCornerRadius * cos(angle));
         GLfloat y = (GLfloat) (-WINDOW_HEIGHT / 2) + padding + (pitchCornerRadius * sin(angle));
         glVertex2f(x, y);
@@ -116,7 +98,7 @@ void pitch_corner_quarter_circles() {
     glEnd();
     glBegin(GL_LINE_STRIP);
     for (int i = 0; i < 90; i++) {
-        auto angle = (GLfloat)(i * pi / 180);
+        auto angle = (GLfloat) (i * pi / 180);
         GLfloat x = (GLfloat) (WINDOW_WIDTH / 2) - padding - (pitchCornerRadius * cos(angle));
         GLfloat y = (GLfloat) (WINDOW_HEIGHT / 2) - padding - (pitchCornerRadius * sin(angle));
         glVertex2f(x, y);
@@ -129,9 +111,9 @@ void pitch_center_circle() {
     glLineWidth(2.0);
     glBegin(GL_LINE_LOOP);
     for (int i = 0; i < 360; i++) {
-        auto angle = (GLfloat)(i * pi / 180);
-        GLfloat x = (GLfloat)0.0 + (pitchCenterCircleRadius * cos(angle));
-        GLfloat y = (GLfloat)0.0 + (pitchCenterCircleRadius * sin(angle));
+        auto angle = (GLfloat) (i * pi / 180);
+        GLfloat x = (GLfloat) 0.0 + (pitchCenterCircleRadius * cos(angle));
+        GLfloat y = (GLfloat) 0.0 + (pitchCenterCircleRadius * sin(angle));
         glVertex2f(x, y);
     }
     glEnd();
@@ -151,7 +133,7 @@ void ball() {
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_POLYGON);
     for (int i = 0; i < 360; i++) {
-        auto angle = (GLfloat)(i * pi / 180);
+        auto angle = (GLfloat) (i * pi / 180);
         GLfloat x = ballX + (ballRadius * cos(angle));
         GLfloat y = ballY + (ballRadius * sin(angle));
         glVertex2f(x, y);
@@ -160,30 +142,25 @@ void ball() {
 }
 
 void goal1() {
-    glColor3f(1.0, 0.0, 0.0);
+    glColor3f(0.8, 0.0, 0.0);
     goal_lines(goal1X1, goal1Y1, goal1X2, goal1Y2);
 }
 
 void goal2() {
-    glColor3f(0.0, 0.0, 1.0);
+    glColor3f(0.0, 0.0, 0.8);
     goal_lines(goal2X1, goal2Y1, goal2X2, goal2Y2);
 }
 
-void player1() {
-    glColor3f(1.0, 0.0, 0.0);
-    rectangle(player1X1, player1Y1, player1X2, player1Y2);
+void drawPlayers() {
+    player1.drawPlayer();
+    player2.drawPlayer();
 }
 
-void player2() {
-    glColor3f(0.0, 0.0, 1.0);
-    rectangle(player2X1, player2Y1, player2X2, player2Y2);
-}
-
-void winnerText() {
-    if(game_over) {
+void goal_text() {
+    if (is_player_scored) {
         glColor3f(0.0, 0.0, 0.0);
         glRasterPos2f(-70, 0);
-        for (char i : winnerStr) {
+        for (char i: goalTextString) {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
         }
     }
@@ -191,21 +168,21 @@ void winnerText() {
 
 void timeText() {
     glColor3f(0.0, 0.0, 0.0);
-    glRasterPos2f(-30, WINDOW_HEIGHT/2 - padding/2 - 8);
+    glRasterPos2f(-30, WINDOW_HEIGHT / 2 - padding / 2 - 8);
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'T');
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'i');
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'm');
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'e');
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ':');
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ' ');
-    for (char i : intToString(current_second)) {
+    for (char i: intToString(current_second)) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, i);
     }
 }
 
 void scoreText() {
     glColor3f(0.0, 0.0, 0.0);
-    glRasterPos2f(-WINDOW_WIDTH/2 + padding/2 + 8, WINDOW_HEIGHT/2 - padding/2 - 8);
+    glRasterPos2f(-WINDOW_WIDTH / 2 + padding / 2 + 8, WINDOW_HEIGHT / 2 - padding / 2 - 8);
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'S');
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'c');
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'o');
@@ -213,13 +190,13 @@ void scoreText() {
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'e');
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ':');
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ' ');
-    for (char i : intToString(player1score)) {
+    for (char i: intToString(player1.getPlayerScore())) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, i);
     }
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ' ');
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, '-');
     glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ' ');
-    for (char i : intToString(player2score)) {
+    for (char i: intToString(player2.getPlayerScore())) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, i);
     }
 }
@@ -228,9 +205,14 @@ void reshape([[maybe_unused]] int w, [[maybe_unused]] int h) {
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-WINDOW_WIDTH/2, WINDOW_WIDTH/2, -WINDOW_HEIGHT/2, WINDOW_HEIGHT/2, -1.0, 1.0);
+    glOrtho(-WINDOW_WIDTH / 2, WINDOW_WIDTH / 2, -WINDOW_HEIGHT / 2, WINDOW_HEIGHT / 2, -1.0, 1.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+}
+
+void displayInit() {
+    player1 = Player(1, player1X1, player1Y1, playerWidth, playerHeight, playerSpeed);
+    player2 = Player(2, player2X1, player2Y1, playerWidth, playerHeight, playerSpeed);
 }
 
 void display() {
@@ -245,12 +227,11 @@ void display() {
     goal_border_lines();
     penalty_area_lines();
     penalty_spots();
-    player1();
-    player2();
+    drawPlayers();
     ball();
     timeText();
     scoreText();
-    winnerText();
+    goal_text();
     glFlush();
 }
 

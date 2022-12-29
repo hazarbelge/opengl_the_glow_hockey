@@ -4,21 +4,22 @@
 #include "manager_methods.h"
 
 void goal_control() {
-    if (ballX + ballRadius >= goal2X2 && ballY >= goal2Y1 && ballY <= goal2Y2) {
+    if (ballX > goal2X1 + goalWidth/3 && ballY >= goal2Y1 && ballY <= goal2Y2) {
         player1_won();
     }
-    if (ballX - ballRadius <= goal1X2 && ballY >= goal1Y1 && ballY <= goal1Y2) {
+    if (ballX < goal1X1 - goalWidth/3 && ballY >= goal1Y1 && ballY <= goal1Y2) {
         player2_won();
     }
 }
 
 void collide_with_player_rectangles() {
-    if (ballX + ballRadius >= player2X2 && ballY >= player2Y1 && ballY <= player2Y2) {
-        ballX = player2X2 - ballRadius;
+    if (ballX - ballRadius <= player1.getPlayerX2() && ballY >= player1.getPlayerY1() && ballY <= player1.getPlayerY2()) {
+        ballX = player1.getPlayerX2() + ballRadius;
         ballSpeedX = -ballSpeedX;
     }
-    if (ballX - ballRadius <= player1X2 && ballY >= player1Y1 && ballY <= player1Y2) {
-        ballX = player1X2 + ballRadius;
+
+    if (ballX + ballRadius >= player2.getPlayerX1() && ballY >= player2.getPlayerY1() && ballY <= player2.getPlayerY2()) {
+        ballX = player2.getPlayerX1() - ballRadius;
         ballSpeedX = -ballSpeedX;
     }
 }
@@ -57,41 +58,37 @@ void ball_movement() {
 
 void speedUpBall() {
     if (ballSpeedX > 0) {
-        ballSpeedX += 0.001;
+        ballSpeedX += returnRandomFloatBetween(0.001, 0.005);
     } else {
-        ballSpeedX -= 0.001;
+        ballSpeedX -= returnRandomFloatBetween(0.001, 0.005);
     }
     if (ballSpeedY > 0) {
-        ballSpeedY += 0.001;
+        ballSpeedY += returnRandomFloatBetween(0.001, 0.005);
     } else {
-        ballSpeedY -= 0.001;
+        ballSpeedY -= returnRandomFloatBetween(0.001, 0.005);
     }
 }
 
 void key_controls() {
     if (keyStates['w']) {
-        if (player1Y2 <= goal1Y2) {
-            player1Y1 += playerSpeed;
-            player1Y2 += playerSpeed;
+        if (player1.getPlayerY2() <= goal1Y2) {
+            player1.movePlayerUp();
         }
     }
     if (keyStates['s']) {
-        if (player1Y1 >= goal1Y1) {
-            player1Y1 -= playerSpeed;
-            player1Y2 -= playerSpeed;
+        if (player1.getPlayerY1() >= goal1Y1) {
+            player1.movePlayerDown();
         }
     }
 
     if (keyStates[GLUT_KEY_UP]) {
-        if (player2Y2 <= goal2Y2) {
-            player2Y1 += playerSpeed;
-            player2Y2 += playerSpeed;
+        if (player2.getPlayerY2() <= goal2Y2) {
+            player2.movePlayerUp();
         }
     }
     if (keyStates[GLUT_KEY_DOWN]) {
-        if (player2Y1 >= goal2Y1) {
-            player2Y1 -= playerSpeed;
-            player2Y2 -= playerSpeed;
+        if (player2.getPlayerY1() >= goal2Y1) {
+            player2.movePlayerDown();
         }
     }
 }

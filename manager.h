@@ -16,6 +16,7 @@
 #include "display.h"
 #include "idle.h"
 #include "manager_methods.h"
+#include "player.h"
 
 void special(int key, [[maybe_unused]] int x, [[maybe_unused]] int y)
 {
@@ -38,9 +39,11 @@ void keyboardUp(unsigned char key, [[maybe_unused]] int x, [[maybe_unused]] int 
 }
 
 void startGame([[maybe_unused]] int value) {
+    player1.resetPosition();
+    player2.resetPosition();
     resetBall();
     glutIdleFunc(idle);
-    game_over = false;
+    is_player_scored = false;
 }
 
 void endGame() {
@@ -49,25 +52,25 @@ void endGame() {
     glutTimerFunc(2000, startGame, 0);
 }
 
-void setWinnerText(std::string str) {
-    winnerStr = std::move(str);
+void setGoalText(std::string str) {
+    goalTextString = std::move(str);
 }
 
 void player1_won() {
     glColor3f(0.0, 1.0, 0.0);
     glRasterPos2f(0, 0);
-    game_over = true;
-    setWinnerText("Player 1 won!");
-    player1score++;
+    is_player_scored = true;
+    setGoalText("Goal by Player 1");
+    player1.setPlayerScore(player1.getPlayerScore() + 1);
     endGame();
 }
 
 void player2_won() {
     glColor3f(0.0, 0.0, 0.0);
     glRasterPos2f(0, 0);
-    game_over = true;
-    setWinnerText("Player 2 won!");
-    player2score++;
+    is_player_scored = true;
+    setGoalText("Goal by Player 2!");
+    player2.setPlayerScore(player2.getPlayerScore() + 1);
     endGame();
 }
 
