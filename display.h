@@ -6,9 +6,9 @@
 
 static GLuint textureName[2];
 
-char* filenameArrayMain[2] = {
-        "../pitch.bmp",
-            "../stadium.bmp",
+char* filenameArray[2] = {
+        (char*)"../pitch.bmp",
+        (char*)"../stadium.bmp",
 };
 
 void stadium() {
@@ -19,7 +19,7 @@ void stadium() {
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-    glBindTexture(GL_TEXTURE_2D, textureName[1]);	// Texture #i is active now
+    glBindTexture(GL_TEXTURE_2D, textureName[1]);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0, 0.0); glVertex2f(-WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
     glTexCoord2f(1.0, 0.0); glVertex2f(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
@@ -40,7 +40,7 @@ void pitch_background(){
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-    glBindTexture(GL_TEXTURE_2D, textureName[0]);	// Texture #i is active now
+    glBindTexture(GL_TEXTURE_2D, textureName[0]);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0, 0.0); glVertex2f(-WINDOW_WIDTH/2, -WINDOW_HEIGHT/2);
     glTexCoord2f(0.0, 1.0); glVertex2f(-WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
@@ -369,7 +369,7 @@ void displayInit() {
     glGenTextures( 2, textureName );	// Load four Texture names into array
     for ( int i=0; i<2; i++ ) {
         glBindTexture(GL_TEXTURE_2D, textureName[i]);	// Texture #i is active now
-        loadTextureFromFile(filenameArrayMain[i]);			// Load Texture #i
+        loadTextureFromFile(filenameArray[i]);			// Load Texture #i
     }
     player1 = Player(1, player1X1, player1Y1, playerWidth, playerHeight, playerSpeed);
     player2 = Player(2, player2X1, player2Y1, playerWidth, playerHeight, playerSpeed);
