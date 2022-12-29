@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef RGBIMAGE_H
-#define RGBIMAGE_H
+#ifndef TEXTURE//.H
+#define TEXTURE//.H
 
 #include <stdio.h>
 #include <assert.h>
@@ -28,15 +28,15 @@
 // Include the next line to turn off the routines that use OpenGL
 // #define RGBIMAGE_DONT_USE_OPENGL
 
-class RgbImage
+class Texture
 {
 public:
-	RgbImage();
-	RgbImage( const char* filename );
-	RgbImage( int numRows, int numCols );	// Initialize a blank bitmap of this size.
-	~RgbImage();
+	Texture();
+	Texture(const char* filename );
+	Texture(int numRows, int numCols );	// Initialize a blank bitmap of this size.
+	~Texture();
 
-	bool LoadBmpFile( const char *filename );		// Loads the bitmap from the specified file
+    bool LoadBmpFile( const char *filename );		// Loads the bitmap from the specified file
 	bool WriteBmpFile( const char* filename );		// Write the bitmap to the specified file
 #ifndef RGBIMAGE_DONT_USE_OPENGL
 	bool LoadFromOpenglBuffer();					// Load the bitmap from the current OpenGL buffer
@@ -87,7 +87,7 @@ private:
 
 };
 
-inline RgbImage::RgbImage()
+inline Texture::Texture()
 {
 	NumRows = 0;
 	NumCols = 0;
@@ -95,7 +95,7 @@ inline RgbImage::RgbImage()
 	ErrorCode = 0;
 }
 
-inline RgbImage::RgbImage( const char* filename )
+inline Texture::Texture(const char* filename )
 {
 	NumRows = 0;
 	NumCols = 0;
@@ -104,13 +104,13 @@ inline RgbImage::RgbImage( const char* filename )
 	LoadBmpFile( filename );
 }
 
-inline RgbImage::~RgbImage()
+inline Texture::~Texture()
 {
 	delete[] ImagePtr;
 }
 
 // Returned value points to three "unsigned char" values for R,G,B
-inline const unsigned char* RgbImage::GetRgbPixel( long row, long col ) const
+inline const unsigned char* Texture::GetRgbPixel(long row, long col ) const
 {
 	assert ( row<NumRows && col<NumCols );
 	const unsigned char* ret = ImagePtr;
@@ -119,7 +119,7 @@ inline const unsigned char* RgbImage::GetRgbPixel( long row, long col ) const
 	return ret;
 }
 
-inline unsigned char* RgbImage::GetRgbPixel( long row, long col )
+inline unsigned char* Texture::GetRgbPixel(long row, long col )
 {
 	assert ( row<NumRows && col<NumCols );
 	unsigned char* ret = ImagePtr;
@@ -128,7 +128,7 @@ inline unsigned char* RgbImage::GetRgbPixel( long row, long col )
 	return ret;
 }
 
-inline void RgbImage::GetRgbPixel( long row, long col, float* red, float* green, float* blue ) const
+inline void Texture::GetRgbPixel(long row, long col, float* red, float* green, float* blue ) const
 {
 	assert ( row<NumRows && col<NumCols );
 	const unsigned char* thePixel = GetRgbPixel( row, col );
@@ -138,7 +138,7 @@ inline void RgbImage::GetRgbPixel( long row, long col, float* red, float* green,
 	*blue = f*(float)(*thePixel);
 }
 
-inline void RgbImage::GetRgbPixel( long row, long col, double* red, double* green, double* blue ) const
+inline void Texture::GetRgbPixel(long row, long col, double* red, double* green, double* blue ) const
 {
 	assert ( row<NumRows && col<NumCols );
 	const unsigned char* thePixel = GetRgbPixel( row, col );
@@ -148,7 +148,7 @@ inline void RgbImage::GetRgbPixel( long row, long col, double* red, double* gree
 	*blue = f*(double)(*thePixel);
 }
 
-inline void RgbImage::Reset()
+inline void Texture::Reset()
 {
 	NumRows = 0;
 	NumCols = 0;
@@ -158,4 +158,4 @@ inline void RgbImage::Reset()
 }
 
 
-#endif // RGBIMAGE_H
+#endif // TEXTURE.H

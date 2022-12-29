@@ -38,8 +38,6 @@ public:
     GLfloat getPlayerSpeed();
 
     GLint getPlayerNumber();
-
-    void resetPosition();
 };
 
 inline Player::Player(GLint playerNumber, GLfloat playerX1, GLfloat playerY1, GLfloat playerWidth, GLfloat playerHeight,
@@ -95,10 +93,6 @@ inline GLfloat Player::getPlayerX2() const {
 
 inline GLfloat Player::getPlayerY2() const {
     return getPlayerY1() + playerHeight;
-}
-
-inline void Player::resetPosition() {
-    playerY1 = -playerHeight / 2;
 }
 
 #endif //CO_OP_BALL_GAME_PLAYER_H

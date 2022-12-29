@@ -40,11 +40,10 @@ void keyboardUp(unsigned char key, [[maybe_unused]] int x, [[maybe_unused]] int 
 }
 
 void startGame([[maybe_unused]] int value) {
-    player1.resetPosition();
-    player2.resetPosition();
     resetBall();
     glutIdleFunc(idle);
     is_player_scored = false;
+    player_scored = 0;
 }
 
 void endGame() {
@@ -61,7 +60,8 @@ void player1_won() {
     glColor3f(0.0, 1.0, 0.0);
     glRasterPos2f(0, 0);
     is_player_scored = true;
-    setGoalText("Goal by Player 1");
+    player_scored = 1;
+    setGoalText("Goal by PLAYER 1!");
     player1.setPlayerScore(player1.getPlayerScore() + 1);
     endGame();
 }
@@ -70,7 +70,8 @@ void player2_won() {
     glColor3f(0.0, 0.0, 0.0);
     glRasterPos2f(0, 0);
     is_player_scored = true;
-    setGoalText("Goal by Player 2!");
+    player_scored = 2;
+    setGoalText("Goal by PLAYER 2!");
     player2.setPlayerScore(player2.getPlayerScore() + 1);
     endGame();
 }

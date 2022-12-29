@@ -19,7 +19,7 @@
  *
  */
 
-#include "RgbImage.h"
+#include "Texture.h"
 
 #ifndef RGBIMAGE_DONT_USE_OPENGL
 #include <GLUT/glut.h>
@@ -28,7 +28,7 @@
 #define BI_RGB 0
 #endif
 
-RgbImage::RgbImage( int numRows, int numCols )
+Texture::Texture(int numRows, int numCols )
 {
 	NumRows = numRows;
 	NumCols = numCols;
@@ -61,7 +61,7 @@ void loadBmpFileMacOS(const char* filename ) {
 
 }
 
-bool RgbImage::LoadBmpFile( const char* filename ) 
+bool Texture::LoadBmpFile(const char* filename )
 {  
 	Reset();
 	FILE* infile = fopen( filename, "rb" );		// Open for reading binary data
@@ -140,7 +140,7 @@ bool RgbImage::LoadBmpFile( const char* filename )
 	return true;
 }
 
-short RgbImage::readShort( FILE* infile )
+short Texture::readShort(FILE* infile )
 {
 	// read a 16 bit integer
 	unsigned char lowByte, hiByte;
@@ -154,7 +154,7 @@ short RgbImage::readShort( FILE* infile )
 	return ret;
 }
 
-long RgbImage::readLong( FILE* infile )
+long Texture::readLong(FILE* infile )
 {  
 	// Read in 32 bit integer
 	unsigned char byte0, byte1, byte2, byte3;
@@ -174,7 +174,7 @@ long RgbImage::readLong( FILE* infile )
 	return ret;
 }
 
-void RgbImage::skipChars( FILE* infile, int numChars )
+void Texture::skipChars(FILE* infile, int numChars )
 {
 	for ( int i=0; i<numChars; i++ ) {
 		fgetc( infile );
@@ -189,7 +189,7 @@ void RgbImage::skipChars( FILE* infile, int numChars )
  *  Author: Sam Buss, January 2003.
  **********************************************************************/
 
-bool RgbImage::WriteBmpFile( const char* filename )
+bool Texture::WriteBmpFile(const char* filename )
 {
 	FILE* outfile = fopen( filename, "wb" );		// Open for reading binary data
 	if ( !outfile ) {
@@ -240,7 +240,7 @@ bool RgbImage::WriteBmpFile( const char* filename )
 	return true;
 }
 
-void RgbImage::writeLong( long data, FILE* outfile )
+void Texture::writeLong(long data, FILE* outfile )
 {  
 	// Read in 32 bit integer
 	unsigned char byte0, byte1, byte2, byte3;
@@ -255,7 +255,7 @@ void RgbImage::writeLong( long data, FILE* outfile )
 	fputc( byte3, outfile );
 }
 
-void RgbImage::writeShort( short data, FILE* outfile )
+void Texture::writeShort(short data, FILE* outfile )
 {  
 	// Read in 32 bit integer
 	unsigned char byte0, byte1;
@@ -268,18 +268,18 @@ void RgbImage::writeShort( short data, FILE* outfile )
 
 
 /*********************************************************************
- * SetRgbPixel routines allow changing the contents of the RgbImage. *
+ * SetRgbPixel routines allow changing the contents of the Texture. *
  *********************************************************************/
 
-void RgbImage::SetRgbPixelf( long row, long col, double red, double green, double blue )
+void Texture::SetRgbPixelf(long row, long col, double red, double green, double blue )
 {
 	SetRgbPixelc( row, col, doubleToUnsignedChar(red), 
 							doubleToUnsignedChar(green),
 							doubleToUnsignedChar(blue) );
 }
 
-void RgbImage::SetRgbPixelc( long row, long col,
-				   unsigned char red, unsigned char green, unsigned char blue )
+void Texture::SetRgbPixelc(long row, long col,
+                           unsigned char red, unsigned char green, unsigned char blue )
 {
 	assert ( row<NumRows && col<NumCols );
 	unsigned char* thePixel = GetRgbPixel( row, col );
@@ -289,7 +289,7 @@ void RgbImage::SetRgbPixelc( long row, long col,
 }
 
 
-unsigned char RgbImage::doubleToUnsignedChar( double x )
+unsigned char Texture::doubleToUnsignedChar(double x )
 {
 	if ( x>=1.0 ) {
 		return (unsigned char)255;
@@ -326,7 +326,7 @@ unsigned char RgbImage::doubleToUnsignedChar( double x )
 
 #ifndef RGBIMAGE_DONT_USE_OPENGL
 
-bool RgbImage::LoadFromOpenglBuffer()					// Load the bitmap from the current OpenGL buffer
+bool Texture::LoadFromOpenglBuffer()					// Load the bitmap from the current OpenGL buffer
 {
 	int viewportData[4];
 	glGetIntegerv( GL_VIEWPORT, viewportData );

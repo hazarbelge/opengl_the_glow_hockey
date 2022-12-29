@@ -34,8 +34,8 @@ bool collide_with_player_rectangles() {
 
 bool collide_with_top_bottom() {
     if(ballSpeedY > 0) {
-        if (ballY + ballRadius + ballSpeedY >= WINDOW_HEIGHT/2 - padding) {
-            ballY = WINDOW_HEIGHT/2 - padding;
+        if (ballY + ballRadius + ballSpeedY >= WINDOW_HEIGHT/2 - padding - paddingTop) {
+            ballY = WINDOW_HEIGHT/2 - padding - paddingTop - ballRadius;
             ballSpeedY = -ballSpeedY;
             return true;
         }

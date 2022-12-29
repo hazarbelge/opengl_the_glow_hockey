@@ -2,6 +2,7 @@
 #define CO_OP_BALL_GAME_UTILS_H
 
 #include "manager_methods.h"
+#include "Texture.h"
 #include <random>
 
 std::string intToString(int value) {
@@ -35,6 +36,27 @@ void line_loop(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2) {
     glVertex2f(x2, y2);
     glVertex2f(x1, y2);
     glEnd();
+}
+
+void loadTextureFromFile(char *filename)
+{
+    glShadeModel(GL_FLAT);
+    glEnable(GL_DEPTH_TEST);
+
+    Texture theTexMap(filename );
+
+    // Pixel alignment: each row is word aligned.  Word alignment is the default.
+    // glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+    // Set the interpolation settings to best quality.
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB,
+                      theTexMap.GetNumCols(), theTexMap.GetNumRows(),
+                      GL_RGB, GL_UNSIGNED_BYTE, theTexMap.ImageData() );
 }
 
 #endif //CO_OP_BALL_GAME_UTILS_H
