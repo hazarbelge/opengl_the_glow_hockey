@@ -115,6 +115,7 @@ void ball_movement() {
 }
 
 void speedUpBall() {
+#ifdef __APPLE_CC__
     if (ballSpeedX > 0) {
         ballSpeedX += returnRandomFloatBetween(0.001, 0.005);
     } else {
@@ -125,6 +126,18 @@ void speedUpBall() {
     } else {
         ballSpeedY -= returnRandomFloatBetween(0.001, 0.005);
     }
+#else
+    if (ballSpeedX > 0) {
+        ballSpeedX += returnRandomFloatBetween(0.0001, 0.0005);
+    } else {
+        ballSpeedX -= returnRandomFloatBetween(0.0001, 0.0005);
+    }
+    if (ballSpeedY > 0) {
+        ballSpeedY += returnRandomFloatBetween(0.0001, 0.0005);
+    } else {
+        ballSpeedY -= returnRandomFloatBetween(0.0001, 0.0005);
+    }
+#endif
 }
 
 void key_controls() {

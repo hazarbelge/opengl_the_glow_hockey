@@ -22,7 +22,11 @@
 #include "Texture.h"
 
 #ifndef RGBIMAGE_DONT_USE_OPENGL
+#ifdef __APPLE_CC__
 #include <GLUT/glut.h>
+#else
+#include <GL/freeglut.h>
+#endif
 #endif
 #ifndef BI_RGB
 #define BI_RGB 0

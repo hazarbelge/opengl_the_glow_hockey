@@ -3,7 +3,7 @@
 int main (int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowPosition(300, 250);
+    glutInitWindowPosition(300, 150);
     glutInitWindowSize((int)WINDOW_WIDTH, (int)WINDOW_HEIGHT);
     glutCreateWindow("The Ball Game");
     displayInit();

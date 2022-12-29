@@ -18,7 +18,12 @@ GLfloat goalHeight = (WINDOW_HEIGHT-paddingTop)/(GLfloat)2.0;
 
 GLfloat playerWidth = 10.0;
 GLfloat playerHeight = goalHeight/(GLfloat)3;
+
+#ifdef __APPLE_CC__
 GLfloat playerSpeed = 6.0;
+#else
+GLfloat playerSpeed = 0.75;
+#endif
 
 GLfloat goal1X1 = (GLfloat)(-WINDOW_WIDTH/2 + padding);
 GLfloat goal1X2 = (GLfloat)(-WINDOW_WIDTH/2 + padding - goalWidth);
@@ -37,8 +42,13 @@ GLfloat ballRadius = 6.0;
 GLfloat ballX = 0.0;
 GLfloat ballY =  - paddingTop/2;
 
+#ifdef __APPLE_CC__
 GLfloat ballSpeedX = 5;
 GLfloat ballSpeedY = 5;
+#else
+GLfloat ballSpeedX = 0.5;
+GLfloat ballSpeedY = 0.5;
+#endif
 
 GLfloat pitchCenterCircleRadius = 80.0;
 GLfloat pitchCornerRadius = 30.0;
@@ -46,8 +56,13 @@ GLfloat pitchCornerRadius = 30.0;
 void resetBall() {
     ballX = 0.0;
     ballY = 0.0;
+#ifdef __APPLE_CC__
     ballSpeedX = returnRandomFloatBetween(4, 7);
     ballSpeedY = returnRandomFloatBetween(4, 7);
+#else
+    ballSpeedX = returnRandomFloatBetween(0.25, 0.75);
+    ballSpeedY = returnRandomFloatBetween(0.25, 0.75);
+#endif
 }
 
 bool keyStates[256];
