@@ -441,10 +441,10 @@ void reshape([[maybe_unused]] int w, [[maybe_unused]] int h) {
 }
 
 void displayInit() {
-    glGenTextures( 9, textureName );	// Load four Texture names into array
+    glGenTextures( 9, textureName );
     for ( int i=0; i<9; i++ ) {
-        glBindTexture(GL_TEXTURE_2D, textureName[i]);	// Texture #i is active now
-        loadTextureFromFile(filenameArray[i]);			// Load Texture #i
+        glBindTexture(GL_TEXTURE_2D, textureName[i]);
+        loadTextureFromFile(filenameArray[i]);
     }
     player1 = Player(1, player1X1, player1Y1, playerWidth, playerHeight, playerSpeed);
     player2 = Player(2, player2X1, player2Y1, playerWidth, playerHeight, playerSpeed);
