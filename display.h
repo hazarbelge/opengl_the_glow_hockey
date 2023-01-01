@@ -91,7 +91,27 @@ void pitch_corner_quarter_circles() {
 }
 
 void pitch_center_circle() {
-    texture_drawer(pitchCenterCircleRadius, -pitchCenterCircleRadius - paddingTop/2, -pitchCenterCircleRadius, pitchCenterCircleRadius- paddingTop/2, 8);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(1.0, 1.0, 1.0, 1);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, textureName[8]);
+    glBegin(GL_POLYGON);
+    for (int j = 0; j < 360; j++) {
+        auto angle = (GLfloat) (j * pi / 180);
+        auto xcos = (GLfloat)cos(angle);
+        auto ysin = (GLfloat)sin(angle);
+        auto x = xcos * (-pitchCenterCircleRadius + 1.5) + 0;
+        auto y = ysin * (-pitchCenterCircleRadius + 1.5) - paddingTop/2;
+        auto tx = xcos * 0.5 + 0.5;
+        auto ty = ysin * 0.5 + 0.5;
+
+        glTexCoord2f((GLfloat)tx, (GLfloat)ty);
+        glVertex2f((GLfloat)x, (GLfloat)y);
+    }
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_BLEND);
 }
 
 void pitch_center_spot() {
@@ -111,8 +131,8 @@ void pitch_center_spot() {
 void drawPitch() {
     stadium();
     pitch_borders();
-    pitch_center_lines();
     pitch_center_circle();
+    pitch_center_lines();
     pitch_background();
     pitch_corner_quarter_circles();
     pitch_center_spot();
