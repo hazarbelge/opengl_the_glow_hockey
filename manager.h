@@ -19,27 +19,7 @@
 #include "player.h"
 #include "button.h"
 #include "mouse.h"
-
-
-void special(int key, [[maybe_unused]] int x, [[maybe_unused]] int y)
-{
-    keyStates[key] = true;
-}
-
-void specialUp(int key, [[maybe_unused]] int x, [[maybe_unused]] int y)
-{
-    keyStates[key] = false;
-}
-
-void keyboard(unsigned char key, [[maybe_unused]] int x, [[maybe_unused]] int y)
-{
-    keyStates[key] = true;
-}
-
-void keyboardUp(unsigned char key, [[maybe_unused]] int x, [[maybe_unused]] int y)
-{
-    keyStates[key] = false;
-}
+#include "keyboard.h"
 
 void startGame([[maybe_unused]] int value) {
     resetBall();

@@ -352,6 +352,44 @@ void scoreText() {
     }
 }
 
+void howToPlayText() {
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 200, WINDOW_HEIGHT / 2 - padding / 2 - 8);
+    for (char i: "How To Play:") {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, i);
+    }
+
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 200, WINDOW_HEIGHT / 2 - padding / 2 - 28);
+    for (char j: "Player 1: W, S") {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, j);
+    }
+
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 200, WINDOW_HEIGHT / 2 - padding / 2 - 48);
+    for (char k: "Player 2: Up, Down") {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, k);
+    }
+
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 200, WINDOW_HEIGHT / 2 - padding / 2 - 68);
+    for (char l: "Press R to Rain") {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, l);
+    }
+
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 200, WINDOW_HEIGHT / 2 - padding / 2 - 88);
+    for (char m: "Press T to Snow") {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, m);
+    }
+
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 200, WINDOW_HEIGHT / 2 - padding / 2 - 108);
+    for (char n: "Press H to hide/show this") {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, n);
+    }
+}
+
 void drawInGameTexts() {
     scoreText();
     timeText();
@@ -461,6 +499,9 @@ void display() {
     } else {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         drawMenu();
+    }
+    if (showHowToPlay) {
+        howToPlayText();
     }
     glFlush();
 }

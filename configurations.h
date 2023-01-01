@@ -11,9 +11,6 @@ GLfloat WINDOW_HEIGHT = 900;
 GLfloat padding = 50.0;
 GLfloat paddingTop = 300.0;
 
-bool isSnowyDay = false;
-bool isRainyDay = false;
-
 GLfloat goalWidth = 30.0;
 GLfloat goalHeight = (WINDOW_HEIGHT-paddingTop)/(GLfloat)2.0;
 
@@ -67,6 +64,10 @@ void resetBall() {
 }
 
 bool gameStarted = false;
+bool isSnowyDay = false;
+bool isRainyDay = false;
+bool showHowToPlay = true;
+
 bool keyStates[256];
 
 Button playButton = Button("Play", -60,0,120,50, []() {
