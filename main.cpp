@@ -3,7 +3,11 @@
 int main (int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+    #ifdef __APPLE_CC__
+    glutInitWindowPosition(250, 250);
+    #else
     glutInitWindowPosition(300, 150);
+    #endif
     glutInitWindowSize((int)WINDOW_WIDTH, (int)WINDOW_HEIGHT);
     glutCreateWindow("The Ball Game");
     displayInit();
