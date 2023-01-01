@@ -8,6 +8,7 @@
 #endif
 
 #include "Texture.h"
+#include "manager.h"
 #include <random>
 
 std::string intToString(int value) {
@@ -28,10 +29,6 @@ GLfloat returnRandomFloatBetween(GLfloat min, GLfloat max) {
     std::default_random_engine rng(rd());
     std::uniform_real_distribution<GLfloat> uni(min, max);
     return uni(rng);
-}
-
-GLfloat returnRandomFloatBetween0and1() {
-    returnRandomFloatBetween(0, 1);
 }
 
 void line_loop(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2) {
@@ -62,6 +59,29 @@ void loadTextureFromFile(char *filename)
     gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB,
                       (GLsizei)theTexMap.GetNumCols(), (GLsizei)theTexMap.GetNumRows(),
                       GL_RGB, GL_UNSIGNED_BYTE, theTexMap.ImageData() );
+}
+
+static GLuint textureName[9];
+
+void texture_drawer(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2, int textureIndex, GLfloat alpha=1) {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(1.0, 1.0, 1.0, alpha);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    glBindTexture(GL_TEXTURE_2D, textureName[textureIndex]);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 0.0); glVertex2f(x1, y1);
+    glTexCoord2f(0.0, 1.0); glVertex2f(x1, y2);
+    glTexCoord2f(1.0, 1.0); glVertex2f(x2, y2);
+    glTexCoord2f(1.0, 0.0); glVertex2f(x2, y1);
+    glEnd();
+
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_BLEND);
 }
 
 #endif //CO_OP_BALL_GAME_UTILS_H

@@ -44,17 +44,13 @@ inline Player::Player(GLint playerNumber, GLfloat playerX1, GLfloat playerY1, GL
         playerSpeed(playerSpeed), playerScore(0) {}
 
 inline void Player::drawPlayer() const {
+    int index;
     if (playerNumber == 1) {
-        glColor3f(1, 0.0, 0.0);
+        index = 6;
     } else {
-        glColor3f(0.0, 0.0, 1);
+        index = 7;
     }
-    glBegin(GL_POLYGON);
-    glVertex2f(getPlayerX1(), getPlayerY2());
-    glVertex2f(getPlayerX2(), getPlayerY2());
-    glVertex2f(getPlayerX2(), getPlayerY1());
-    glVertex2f(getPlayerX1(), getPlayerY1());
-    glEnd();
+    texture_drawer(getPlayerX1() - (GLfloat)1.5, getPlayerY1() - (GLfloat)0.5, getPlayerX2() + (GLfloat)1.5, getPlayerY2() + (GLfloat)0.5, index, 0.75);
 }
 
 inline void Player::movePlayerUp() {

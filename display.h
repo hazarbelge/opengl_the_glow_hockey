@@ -5,84 +5,50 @@
 #include "Texture.h"
 #include "button.h"
 
-static GLuint textureName[4];
-
-char* filenameArray[4] = {
-        (char*)"../pitch.bmp",
-        (char*)"../stadium.bmp",
-        (char*)"../menu_bg.bmp",
-        (char*)"../ball.bmp",
+char* filenameArray[9] = {
+        (char*)"textures/pitch.bmp",
+        (char*)"textures/stadium.bmp",
+        (char*)"textures/menu_bg.bmp",
+        (char*)"textures/ball.bmp",
+        (char*)"textures/red_line.bmp",
+        (char*)"textures/blue_line.bmp",
+        (char*)"textures/red_line_ver.bmp",
+        (char*)"textures/blue_line_ver.bmp",
+        (char*)"textures/center_circle.bmp",
 };
 
 void stadium() {
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4f(0.75, 0.75, 0.75, 1);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_TEXTURE_2D);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    glBindTexture(GL_TEXTURE_2D, textureName[1]);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0, 0.0); glVertex2f(-WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
-    glTexCoord2f(1.0, 0.0); glVertex2f(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
-    glTexCoord2f(1.0, 1.0); glVertex2f(WINDOW_WIDTH/2, WINDOW_HEIGHT/2 - paddingTop);
-    glTexCoord2f(0.0, 1.0); glVertex2f(-WINDOW_WIDTH/2, WINDOW_HEIGHT/2 - paddingTop);
-    glEnd();
-
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_TEXTURE_2D);
-    glDisable(GL_BLEND);
+    texture_drawer(-WINDOW_WIDTH/2, WINDOW_HEIGHT/2 - paddingTop, WINDOW_WIDTH/2, WINDOW_HEIGHT/2, 1, 0.8);
 }
 
 void pitch_background(){
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4f(1.0, 1.0, 1.0, 0.4);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_TEXTURE_2D);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    glBindTexture(GL_TEXTURE_2D, textureName[0]);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0, 0.0); glVertex2f(-WINDOW_WIDTH/2, -WINDOW_HEIGHT/2);
-    glTexCoord2f(0.0, 1.0); glVertex2f(-WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
-    glTexCoord2f(1.0, 1.0); glVertex2f(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
-    glTexCoord2f(1.0, 0.0); glVertex2f(WINDOW_WIDTH/2, -WINDOW_HEIGHT/2);
-    glEnd();
-
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_TEXTURE_2D);
-    glDisable(GL_BLEND);
-}
-
-void pitch_border_lines(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2) {
-    glBegin(GL_LINE_STRIP);
-    glVertex2f(x1, y1);
-    glVertex2f(x1, y2);
-    glVertex2f(x2, y2);
-    glVertex2f(x2, y1);
-    glEnd();
+    texture_drawer(-WINDOW_WIDTH/2, -WINDOW_HEIGHT/2, WINDOW_WIDTH/2, WINDOW_HEIGHT/2, 0, 0.4);
 }
 
 void pitch_borders() {
-    glColor3f(1.0, 1.0, 1.0);
-    pitch_border_lines(goal1X1, goal1Y1, goal2X1, (GLfloat) (-WINDOW_HEIGHT / 2) + padding);
-    pitch_border_lines(goal1X1, goal1Y2, goal2X1, (GLfloat) (WINDOW_HEIGHT / 2) - padding - paddingTop);
+    //red lines
+    texture_drawer(goal1X1 - 4, goal1Y1, goal1X1 + 4, (GLfloat) (-WINDOW_HEIGHT / 2) + padding, 6);
+    texture_drawer(goal1X1 - 2, (GLfloat) (-WINDOW_HEIGHT / 2) + padding - 4, 0,(GLfloat) (-WINDOW_HEIGHT / 2) + padding + 4, 4);
+    texture_drawer(goal1X1 - 4, goal1Y2, goal1X1 + 4, (GLfloat) (WINDOW_HEIGHT / 2) - padding - paddingTop - 4, 6);
+    texture_drawer(goal1X1 - 2, (GLfloat) (WINDOW_HEIGHT / 2) - padding - paddingTop - 4, 0,(GLfloat) (WINDOW_HEIGHT / 2) - padding - paddingTop + 4, 4);
+
+    //blue lines
+    texture_drawer(goal2X1 - 4, goal2Y1, goal2X1 + 4, (GLfloat) (-WINDOW_HEIGHT / 2) + padding, 7);
+    texture_drawer(goal2X1 + 2, (GLfloat) (-WINDOW_HEIGHT / 2) + padding - 4, 0,(GLfloat) (-WINDOW_HEIGHT / 2) + padding + 4, 5);
+    texture_drawer(goal2X1 - 4, goal2Y2, goal2X1 + 4, (GLfloat) (WINDOW_HEIGHT / 2) - padding - paddingTop - 4, 7);
+    texture_drawer(goal2X1 + 2, (GLfloat) (WINDOW_HEIGHT / 2) - padding - paddingTop - 4, 0,(GLfloat) (WINDOW_HEIGHT / 2) - padding - paddingTop + 4, 5);
 }
 
-void pitch_lines() {
-    glColor3f(1.0, 1.0, 1.0);
-    glLineWidth(2.0);
-    glBegin(GL_LINES);
-    glVertex2f(0.0, (GLfloat) (-WINDOW_HEIGHT / 2) + padding);
-    glVertex2f(0.0, (GLfloat) (WINDOW_HEIGHT / 2) - padding - paddingTop);
-    glEnd();
-    glLineWidth(1.0);
+void pitch_center_lines() {
+    texture_drawer(-5, (GLfloat) (-WINDOW_HEIGHT / 2) + padding, -1.5,
+                   (GLfloat) (WINDOW_HEIGHT / 2) - padding - paddingTop, 6);
+    texture_drawer(1.5, (GLfloat) (-WINDOW_HEIGHT / 2) + padding, 5,
+                   (GLfloat) (WINDOW_HEIGHT / 2) - padding - paddingTop, 7);
 }
 
 void pitch_corner_quarter_circles() {
-    glColor3f(1.0, 1.0, 1.0);
+    glLineWidth(4.0);
+    glColor3f(1, 0.3, 0.3);
     glBegin(GL_LINE_STRIP);
     for (int i = 0; i < 90; i++) {
         auto angle = (GLfloat) (i * pi / 180);
@@ -91,6 +57,8 @@ void pitch_corner_quarter_circles() {
         glVertex2f(x, y);
     }
     glEnd();
+
+    glColor3f(1, 0.3, 0.3);
     glBegin(GL_LINE_STRIP);
     for (int i = 0; i < 90; i++) {
         auto angle = (GLfloat) (i * pi / 180);
@@ -99,6 +67,8 @@ void pitch_corner_quarter_circles() {
         glVertex2f(x, y);
     }
     glEnd();
+
+    glColor3f(0.3, 0.3, 1.0);
     glBegin(GL_LINE_STRIP);
     for (int i = 0; i < 90; i++) {
         auto angle = (GLfloat) (i * pi / 180);
@@ -107,6 +77,8 @@ void pitch_corner_quarter_circles() {
         glVertex2f(x, y);
     }
     glEnd();
+
+    glColor3f(0.3, 0.3, 1.0);
     glBegin(GL_LINE_STRIP);
     for (int i = 0; i < 90; i++) {
         auto angle = (GLfloat) (i * pi / 180);
@@ -115,25 +87,16 @@ void pitch_corner_quarter_circles() {
         glVertex2f(x, y);
     }
     glEnd();
+    glLineWidth(1.0);
 }
 
 void pitch_center_circle() {
-    glColor3f(1.0, 1.0, 1.0);
-    glLineWidth(2.0);
-    glBegin(GL_LINE_LOOP);
-    for (int i = 0; i < 360; i++) {
-        auto angle = (GLfloat) (i * pi / 180);
-        GLfloat x = (GLfloat) 0.0 + (pitchCenterCircleRadius * cos(angle));
-        GLfloat y = (GLfloat) - paddingTop/2 + (pitchCenterCircleRadius * sin(angle));
-        glVertex2f(x, y);
-    }
-    glEnd();
-    glLineWidth(1.0);
+    texture_drawer(pitchCenterCircleRadius, -pitchCenterCircleRadius - paddingTop/2, -pitchCenterCircleRadius, pitchCenterCircleRadius- paddingTop/2, 8);
 }
 
 void pitch_center_spot() {
     glColor3f(1.0, 1.0, 1.0);
-    glPointSize(7.0);
+    glPointSize(8.0);
     glBegin(GL_POLYGON);
     for (int j = 0; j < 360; j++) {
         auto angle = (GLfloat) (j * pi / 180);
@@ -147,29 +110,18 @@ void pitch_center_spot() {
 
 void drawPitch() {
     stadium();
-    pitch_background();
     pitch_borders();
-    pitch_lines();
-    pitch_corner_quarter_circles();
+    pitch_center_lines();
     pitch_center_circle();
+    pitch_background();
+    pitch_corner_quarter_circles();
     pitch_center_spot();
-}
-
-void goal_lines(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2) {
-    glLineWidth(5);
-    glBegin(GL_LINE_STRIP);
-    glVertex2f(x1, y1);
-    glVertex2f(x2, y1);
-    glVertex2f(x2, y2);
-    glVertex2f(x1, y2);
-    glEnd();
-    glLineWidth(1);
 }
 
 void goal_border_lines() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4f(1.0, 1.0, 1.0, 0.4);
+    glColor4f(1.0, 1.0, 1.0, 0.6);
     line_loop(goal1X1, goal1Y1, goal1X1, goal1Y2);
     line_loop(goal2X1, goal2Y1, goal2X1, goal2Y2);
     glDisable(GL_BLEND);
@@ -231,13 +183,15 @@ void penalty_spots() {
 }
 
 void goal1() {
-    glColor3f(1, 0.0, 0.0);
-    goal_lines(goal1X1, goal1Y1, goal1X2, goal1Y2);
+    texture_drawer(goal1X2 - 4, goal1Y1, goal1X2 + 4, goal1Y2, 6);
+    texture_drawer(goal1X1, goal1Y1 - 4, goal1X2, goal1Y1 + 4, 4);
+    texture_drawer(goal1X1, goal1Y2 - 4, goal1X2, goal1Y2 + 4, 4);
 }
 
 void goal2() {
-    glColor3f(0.0, 0.0, 1);
-    goal_lines(goal2X1, goal2Y1, goal2X2, goal2Y2);
+    texture_drawer(goal2X2 - 4, goal2Y1, goal2X2 + 4, goal2Y2, 7);
+    texture_drawer(goal2X1, goal2Y1 - 4, goal2X2, goal2Y1 + 4, 5);
+    texture_drawer(goal2X1, goal2Y2 - 4, goal2X2, goal2Y2 + 4, 5);
 }
 
 void drawGoals() {
@@ -258,13 +212,13 @@ void ball() {
         auto angle = (GLfloat) (j * pi / 180);
         auto xcos = (GLfloat)cos(angle);
         auto ysin = (GLfloat)sin(angle);
-        auto x = xcos * ballRadius  + ballX;
-        auto y = ysin * ballRadius  + ballY;
+        auto x = xcos * (ballRadius + 1.5) + ballX;
+        auto y = ysin * (ballRadius + 1.5) + ballY;
         auto tx = xcos * 0.5 + 0.5;
         auto ty = ysin * 0.5 + 0.5;
 
         glTexCoord2f((GLfloat)tx, (GLfloat)ty);
-        glVertex2f(x, y);
+        glVertex2f((GLfloat)x, (GLfloat)y);
     }
     glEnd();
     glDisable(GL_TEXTURE_2D);
@@ -443,7 +397,7 @@ void drawMenuTexts() {
     //draw game title
     glColor3f(1.0, 1.0, 1.0);
     glRasterPos2f(-90, 200);
-    for (char i: "CO-OP Ball Game") {
+    for (char i: "The Glow Hockey") {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
     }
 
@@ -487,8 +441,8 @@ void reshape([[maybe_unused]] int w, [[maybe_unused]] int h) {
 }
 
 void displayInit() {
-    glGenTextures( 4, textureName );	// Load four Texture names into array
-    for ( int i=0; i<4; i++ ) {
+    glGenTextures( 9, textureName );	// Load four Texture names into array
+    for ( int i=0; i<9; i++ ) {
         glBindTexture(GL_TEXTURE_2D, textureName[i]);	// Texture #i is active now
         loadTextureFromFile(filenameArray[i]);			// Load Texture #i
     }
@@ -499,9 +453,9 @@ void displayInit() {
 void display() {
     if(gameStarted) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        drawPitch();
-        drawGoals();
         drawPlayers();
+        drawGoals();
+        drawPitch();
         ball();
         if (isSnowyDay) snow_animation_foreground();
         if (isRainyDay) rain_animation_foreground();

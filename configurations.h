@@ -70,10 +70,10 @@ bool showHowToPlay = true;
 
 bool keyStates[256];
 
-Button playButton = Button("Play", -60,0,120,50, []() {
+Button playButton = Button((char*)"Play", -60,0,120,50, []() {
     gameStarted = true;
 });
-Button exitButton = Button("Exit", -60,-120,120,50, []() {
+Button exitButton = Button((char*)"Exit", -60,-120,120,50, []() {
     exit(0);
 });
 
@@ -87,8 +87,8 @@ std::string goalTextString;
 void timer([[maybe_unused]] int value) {
     if (gameStarted) {
         current_second++;
-        glutTimerFunc(1000, timer, current_second);
     }
+    glutTimerFunc(1000, timer, current_second);
 }
 
 #endif //CO_OP_BALL_GAME_CONFIGURATIONS_H

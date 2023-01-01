@@ -9,9 +9,9 @@ int main (int argc, char** argv) {
     glutInitWindowPosition(300, 150);
     #endif
     glutInitWindowSize((int)WINDOW_WIDTH, (int)WINDOW_HEIGHT);
-    glutCreateWindow("The Ball Game");
+    glutCreateWindow("The Glow Hockey");
     displayInit();
-    glClearColor(0.0, 0.6, 0.0, 0.0);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
     glMatrixMode(GL_PROJECTION);
     gluOrtho2D(-WINDOW_WIDTH/2, WINDOW_WIDTH/2, -WINDOW_HEIGHT/2, WINDOW_HEIGHT/2);
     glutIgnoreKeyRepeat(1);
