@@ -1,6 +1,12 @@
 #ifndef CO_OP_BALL_GAME_MANAGER_METHODS_H
 #define CO_OP_BALL_GAME_MANAGER_METHODS_H
 
+#ifdef __APPLE_CC__
+#include <GLUT/glut.h>
+#else
+#include <GL/freeglut.h>
+#endif
+
 #include "player.h"
 
 Player player1 = Player(0, 0, 0, 0, 0, 0);

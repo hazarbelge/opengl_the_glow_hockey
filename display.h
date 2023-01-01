@@ -3,12 +3,14 @@
 
 #include "manager_methods.h"
 #include "Texture.h"
+#include "button.h"
 
-static GLuint textureName[2];
+static GLuint textureName[3];
 
-char* filenameArray[2] = {
+char* filenameArray[3] = {
         (char*)"../pitch.bmp",
         (char*)"../stadium.bmp",
+        (char*)"../menu_bg.bmp",
 };
 
 void stadium() {
@@ -350,10 +352,81 @@ void scoreText() {
     }
 }
 
-void drawTexts() {
+void drawInGameTexts() {
     scoreText();
     timeText();
     goal_text();
+}
+
+void drawMenuBackground() {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(1.0, 1.0, 1.0, 0.75);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    glBindTexture(GL_TEXTURE_2D, textureName[2]);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 0.0); glVertex2f(-WINDOW_WIDTH/2, -WINDOW_HEIGHT/2);
+    glTexCoord2f(0.0, 1.0); glVertex2f(-WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
+    glTexCoord2f(1.0, 1.0); glVertex2f(WINDOW_WIDTH/2, WINDOW_HEIGHT/2);
+    glTexCoord2f(1.0, 0.0); glVertex2f(WINDOW_WIDTH/2, -WINDOW_HEIGHT/2);
+    glEnd();
+
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_BLEND);
+}
+
+void drawMenuButtons() {
+    for (Button button: menuButtons) {
+        button.drawButton();
+    }
+}
+
+void drawMenuButtonTexts() {
+    for (Button button: menuButtons) {
+        button.drawButtonText();
+    }
+}
+
+void drawMenuTexts() {
+    //draw game title
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2f(-90, 200);
+    for (char i: "CO-OP Ball Game") {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+
+    //draw authors
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2f(WINDOW_WIDTH/2 - 400, -WINDOW_HEIGHT / 2 + padding / 2 + 8);
+    for (char i: "By: ") {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+    glColor3f(1.0, 0.0, 0.0);
+    glRasterPos2f(WINDOW_WIDTH/2 - 350, -WINDOW_HEIGHT / 2 + padding / 2 + 8);
+    for (char i: "Ayca Kiremitci") {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+    glColor3f(1.0, 1.0, 1.0);
+    glRasterPos2f(WINDOW_WIDTH/2 - 190, -WINDOW_HEIGHT / 2 + padding / 2 + 8);
+    for (char i: "and") {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+    glColor3f(0.0, 0.0, 1.0);
+    glRasterPos2f(WINDOW_WIDTH/2 - 140, -WINDOW_HEIGHT / 2 + padding / 2 + 8);
+    for (char i: "Hazar Belge") {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+}
+
+void drawMenu() {
+    drawMenuBackground();
+    drawMenuButtons();
+    drawMenuButtonTexts();
+    drawMenuTexts();
 }
 
 void reshape([[maybe_unused]] int w, [[maybe_unused]] int h) {
@@ -366,8 +439,8 @@ void reshape([[maybe_unused]] int w, [[maybe_unused]] int h) {
 }
 
 void displayInit() {
-    glGenTextures( 2, textureName );	// Load four Texture names into array
-    for ( int i=0; i<2; i++ ) {
+    glGenTextures( 3, textureName );	// Load four Texture names into array
+    for ( int i=0; i<3; i++ ) {
         glBindTexture(GL_TEXTURE_2D, textureName[i]);	// Texture #i is active now
         loadTextureFromFile(filenameArray[i]);			// Load Texture #i
     }
@@ -376,14 +449,19 @@ void displayInit() {
 }
 
 void display() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    drawPitch();
-    drawGoals();
-    drawPlayers();
-    ball();
-    if (isSnowyDay) snow_animation_foreground();
-    if (isRainyDay) rain_animation_foreground();
-    drawTexts();
+    if(gameStarted) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        drawPitch();
+        drawGoals();
+        drawPlayers();
+        ball();
+        if (isSnowyDay) snow_animation_foreground();
+        if (isRainyDay) rain_animation_foreground();
+        drawInGameTexts();
+    } else {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        drawMenu();
+    }
     glFlush();
 }
 

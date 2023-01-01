@@ -18,6 +18,7 @@ int main (int argc, char** argv) {
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
     glutIdleFunc(idle);
+    glutMouseFunc(mouse);
     glutTimerFunc(1000, timer, current_second);
     glutMainLoop();
     return EXIT_SUCCESS;

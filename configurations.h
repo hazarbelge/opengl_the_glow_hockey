@@ -2,6 +2,7 @@
 #define CO_OP_BALL_GAME_CONFIGURATIONS_H
 
 #include "manager_methods.h"
+#include "button.h"
 
 #define pi 3.14
 
@@ -65,7 +66,17 @@ void resetBall() {
 #endif
 }
 
+bool gameStarted = false;
 bool keyStates[256];
+
+Button playButton = Button("Play", -60,0,120,50, []() {
+    gameStarted = true;
+});
+Button exitButton = Button("Exit", -60,-120,120,50, []() {
+    exit(0);
+});
+
+std::vector<Button> menuButtons = {playButton, exitButton};
 
 int current_second = 0;
 bool is_player_scored = false;
@@ -73,8 +84,10 @@ int player_scored = 0;
 std::string goalTextString;
 
 void timer([[maybe_unused]] int value) {
-    current_second++;
-    glutTimerFunc(1000, timer, current_second);
+    if (gameStarted) {
+        current_second++;
+        glutTimerFunc(1000, timer, current_second);
+    }
 }
 
 #endif //CO_OP_BALL_GAME_CONFIGURATIONS_H

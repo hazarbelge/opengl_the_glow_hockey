@@ -1,7 +1,12 @@
 #ifndef CO_OP_BALL_GAME_UTILS_H
 #define CO_OP_BALL_GAME_UTILS_H
 
-#include "manager_methods.h"
+#ifdef __APPLE_CC__
+#include <GLUT/glut.h>
+#else
+#include <GL/freeglut.h>
+#endif
+
 #include "Texture.h"
 #include <random>
 
@@ -55,7 +60,7 @@ void loadTextureFromFile(char *filename)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB,
-                      theTexMap.GetNumCols(), theTexMap.GetNumRows(),
+                      (GLsizei)theTexMap.GetNumCols(), (GLsizei)theTexMap.GetNumRows(),
                       GL_RGB, GL_UNSIGNED_BYTE, theTexMap.ImageData() );
 }
 

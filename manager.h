@@ -8,7 +8,6 @@
 #endif
 
 #include <cstdlib>
-#include <stdlib.h>
 #include <ctime>
 #include <cmath>
 #include <string>
@@ -18,6 +17,9 @@
 #include "idle.h"
 #include "manager_methods.h"
 #include "player.h"
+#include "button.h"
+#include "mouse.h"
+
 
 void special(int key, [[maybe_unused]] int x, [[maybe_unused]] int y)
 {

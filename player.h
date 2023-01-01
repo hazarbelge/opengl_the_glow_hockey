@@ -1,7 +1,11 @@
 #ifndef CO_OP_BALL_GAME_PLAYER_H
 #define CO_OP_BALL_GAME_PLAYER_H
 
-#include "manager_methods.h"
+#ifdef __APPLE_CC__
+#include <GLUT/glut.h>
+#else
+#include <GL/freeglut.h>
+#endif
 
 class Player {
     GLint playerNumber;
@@ -21,8 +25,6 @@ public:
 
     void movePlayerDown();
 
-    void stopPlayer();
-
     void setPlayerScore(int score);
 
     [[nodiscard]] int getPlayerScore() const;
@@ -34,10 +36,6 @@ public:
     [[nodiscard]] GLfloat getPlayerX2() const;
 
     [[nodiscard]] GLfloat getPlayerY2() const;
-
-    GLfloat getPlayerSpeed();
-
-    GLint getPlayerNumber();
 };
 
 inline Player::Player(GLint playerNumber, GLfloat playerX1, GLfloat playerY1, GLfloat playerWidth, GLfloat playerHeight,
@@ -65,10 +63,6 @@ inline void Player::movePlayerUp() {
 
 inline void Player::movePlayerDown() {
     playerY1 -= playerSpeed;
-}
-
-inline void Player::stopPlayer() {
-    playerSpeed = 0;
 }
 
 inline void Player::setPlayerScore(int score) {

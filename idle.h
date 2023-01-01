@@ -165,9 +165,11 @@ void key_controls() {
 }
 
 void idle() {
-    key_controls();
-    ball_movement();
-    speedUpBall();
+    if (gameStarted) {
+        key_controls();
+        ball_movement();
+        speedUpBall();
+    }
     glutPostRedisplay();
 }
 
