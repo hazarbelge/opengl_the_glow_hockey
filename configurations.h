@@ -36,7 +36,7 @@ GLfloat player1Y1 = -playerHeight/(GLfloat)2.0 - paddingTop/2;
 GLfloat player2X1 = (GLfloat)(goal2X1 - playerWidth/2);
 GLfloat player2Y1 = -playerHeight/(GLfloat)2.0 - paddingTop/2;
 
-GLfloat ballRadius = 6.0;
+GLfloat ballRadius = 7.0;
 GLfloat ballX = 0.0;
 GLfloat ballY =  - paddingTop/2;
 

@@ -5,12 +5,13 @@
 #include "Texture.h"
 #include "button.h"
 
-static GLuint textureName[3];
+static GLuint textureName[4];
 
-char* filenameArray[3] = {
+char* filenameArray[4] = {
         (char*)"../pitch.bmp",
         (char*)"../stadium.bmp",
         (char*)"../menu_bg.bmp",
+        (char*)"../ball.bmp",
 };
 
 void stadium() {
@@ -249,15 +250,24 @@ void drawGoals() {
 }
 
 void ball() {
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, textureName[3]);
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_POLYGON);
-    for (int i = 0; i < 360; i++) {
-        auto angle = (GLfloat) (i * pi / 180);
-        GLfloat x = ballX + (ballRadius * cos(angle));
-        GLfloat y = ballY + (ballRadius * sin(angle));
+    for (int j = 0; j < 360; j++) {
+        auto angle = (GLfloat) (j * pi / 180);
+        auto xcos = (GLfloat)cos(angle);
+        auto ysin = (GLfloat)sin(angle);
+        auto x = xcos * ballRadius  + ballX;
+        auto y = ysin * ballRadius  + ballY;
+        auto tx = xcos * 0.5 + 0.5;
+        auto ty = ysin * 0.5 + 0.5;
+
+        glTexCoord2f((GLfloat)tx, (GLfloat)ty);
         glVertex2f(x, y);
     }
     glEnd();
+    glDisable(GL_TEXTURE_2D);
 }
 
 void drawPlayers() {
@@ -477,8 +487,8 @@ void reshape([[maybe_unused]] int w, [[maybe_unused]] int h) {
 }
 
 void displayInit() {
-    glGenTextures( 3, textureName );	// Load four Texture names into array
-    for ( int i=0; i<3; i++ ) {
+    glGenTextures( 4, textureName );	// Load four Texture names into array
+    for ( int i=0; i<4; i++ ) {
         glBindTexture(GL_TEXTURE_2D, textureName[i]);	// Texture #i is active now
         loadTextureFromFile(filenameArray[i]);			// Load Texture #i
     }
