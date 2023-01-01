@@ -303,74 +303,67 @@ void goal_text() {
 
 void timeText() {
     glColor3f(1.0, 1.0, 1.0);
-    glRasterPos2f(-30, WINDOW_HEIGHT / 2 - padding / 2 - 8);
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'T');
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'i');
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'm');
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'e');
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ':');
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ' ');
+    glRasterPos2f(-40, WINDOW_HEIGHT / 2 - padding / 2 - 8);
+    for (char i: "Time: ") {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
     for (char i: intToString(current_second)) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, i);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
     }
 }
 
 void scoreText() {
     glColor3f(1.0, 1.0, 1.0);
     glRasterPos2f(-WINDOW_WIDTH / 2 + padding / 2 + 8, WINDOW_HEIGHT / 2 - padding / 2 - 8);
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'S');
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'c');
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'o');
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'r');
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 'e');
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ':');
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ' ');
-    for (char i: intToString(player1.getPlayerScore())) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, i);
+    for (char i: "Score: ") {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
     }
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ' ');
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, '-');
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ' ');
+    for (char i: intToString(player1.getPlayerScore())) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+    for (char i: " - ") {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
     for (char i: intToString(player2.getPlayerScore())) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, i);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
     }
 }
 
 void howToPlayText() {
     glColor3f(1.0, 1.0, 1.0);
-    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 200, WINDOW_HEIGHT / 2 - padding / 2 - 8);
+    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 250, WINDOW_HEIGHT / 2 - padding / 2 - 8);
     for (char i: "How To Play:") {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, i);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
     }
 
     glColor3f(1.0, 1.0, 1.0);
-    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 200, WINDOW_HEIGHT / 2 - padding / 2 - 28);
+    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 250, WINDOW_HEIGHT / 2 - padding / 2 - 28);
     for (char j: "Player 1: W, S") {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, j);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, j);
     }
 
     glColor3f(1.0, 1.0, 1.0);
-    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 200, WINDOW_HEIGHT / 2 - padding / 2 - 48);
+    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 250, WINDOW_HEIGHT / 2 - padding / 2 - 48);
     for (char k: "Player 2: Up, Down") {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, k);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, k);
     }
 
     glColor3f(1.0, 1.0, 1.0);
-    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 200, WINDOW_HEIGHT / 2 - padding / 2 - 68);
+    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 250, WINDOW_HEIGHT / 2 - padding / 2 - 68);
     for (char l: "Press R to Rain") {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, l);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, l);
     }
 
     glColor3f(1.0, 1.0, 1.0);
-    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 200, WINDOW_HEIGHT / 2 - padding / 2 - 88);
+    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 250, WINDOW_HEIGHT / 2 - padding / 2 - 88);
     for (char m: "Press T to Snow") {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, m);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, m);
     }
 
     glColor3f(1.0, 1.0, 1.0);
-    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 200, WINDOW_HEIGHT / 2 - padding / 2 - 108);
+    glRasterPos2f(WINDOW_WIDTH / 2 - padding / 2 - 250, WINDOW_HEIGHT / 2 - padding / 2 - 108);
     for (char n: "Press H to hide/show this") {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, n);
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, n);
     }
 }
 
@@ -414,14 +407,12 @@ void drawMenuButtonTexts() {
 }
 
 void drawMenuTexts() {
-    //draw game title
     glColor3f(1.0, 1.0, 1.0);
     glRasterPos2f(-90, 200);
     for (char i: "The Glow Hockey") {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
     }
 
-    //draw authors
     glColor3f(1.0, 1.0, 1.0);
     glRasterPos2f(WINDOW_WIDTH/2 - 400, -WINDOW_HEIGHT / 2 + padding / 2 + 8);
     for (char i: "By: ") {
