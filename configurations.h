@@ -7,9 +7,9 @@
 #define pi 3.14
 
 GLfloat WINDOW_WIDTH = 1200;
-GLfloat WINDOW_HEIGHT = 900;
+GLfloat WINDOW_HEIGHT = 600;
 GLfloat padding = 50.0;
-GLfloat paddingTop = 300.0;
+GLfloat paddingTop = 0.0;
 
 GLfloat goalWidth = 30.0;
 GLfloat goalHeight = (WINDOW_HEIGHT-paddingTop)/(GLfloat)2.0;
